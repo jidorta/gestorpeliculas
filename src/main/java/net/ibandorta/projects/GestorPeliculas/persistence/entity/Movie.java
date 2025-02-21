@@ -1,6 +1,7 @@
 package net.ibandorta.projects.GestorPeliculas.persistence.entity;
 
 import jakarta.persistence.*;
+import net.ibandorta.projects.GestorPeliculas.util.MovieGenre;
 
 import java.util.List;
 
@@ -17,7 +18,8 @@ public class Movie {
     @Column(nullable = false)
     private String director;
 
-    private String genre;
+     @Enumerated(EnumType.STRING)
+    private MovieGenre genre;
 
     @Column(name = "release_year")
     private int releaseYear;
@@ -37,10 +39,6 @@ public class Movie {
         return director;
     }
 
-    public String getGenre() {
-        return genre;
-    }
-
     public int getReleaseYear() {
         return releaseYear;
     }
@@ -57,9 +55,6 @@ public class Movie {
         this.director = director;
     }
 
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
 
     public void setReleaseYear(int releaseYear) {
         this.releaseYear = releaseYear;
@@ -71,5 +66,13 @@ public class Movie {
 
     public void setRatings(List<Rating> ratings) {
         this.ratings = ratings;
+    }
+
+    public MovieGenre getGenre() {
+        return genre;
+    }
+
+    public void setGenre(MovieGenre genre) {
+        this.genre = genre;
     }
 }

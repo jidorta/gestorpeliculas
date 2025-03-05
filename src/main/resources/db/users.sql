@@ -1,0 +1,10 @@
+INSERT INTO User(username,name,password) VALUES ('John_doe2','John Do2e','jaldjfaoifjoew89403530tepqfapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('John_doe3','John Doe','xjaldjfaojoew89403530tepqfapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('iban_dorta','iban dorta','xxjaldjfaoifjoew89403530tefapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Jose_Antonio','Jose Antonio','xxxjaldjfaoifjoew89403530tepqfapafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Javier_Padron','Javier Padrón','xxxxxjaldjfaoifjoew89403530tepqfakafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Nazaret_Rios','Nazaret Rios','jaxxxxxxldjfaoifjoew89403530tepapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Manolo_Antunez ','Manolo_Antunez','jalxxxdjfaoifjoew894030tepqfapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Abraham_Cabrera','Abraham Cabrera','jaldjfaoxxxifjoew894530tepqfapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Samuel_Brito','Samuel Brito','jaldjfafjoew8xxxx9403530tepqfapfkafkpoewgiqte0t');
+INSERT INTO User(username,name,password) VALUES ('Lucia_Sanchez','Lucia Sanchez','jalxxxdjfifjoew89403530tepqfapfkafkpoewgiqte0t');

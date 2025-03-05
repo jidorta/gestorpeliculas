@@ -36,7 +36,7 @@ public class MovieServiceImpl implements MovieService {
 
     @Override
     public List<Movie> findAllByGenreAndTitle(MovieGenre genre, String title) {
-        return movieCrudRepository.findByGeneAndTitleContaining(genre, title);
+        return movieCrudRepository.findByGenreAndTitleContaining(genre, title);
     }
 
     @Override

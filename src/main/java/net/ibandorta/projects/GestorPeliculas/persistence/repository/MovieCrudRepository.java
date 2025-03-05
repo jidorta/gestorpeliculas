@@ -13,6 +13,6 @@ public interface MovieCrudRepository extends JpaRepository<Movie,Long> {
 
     List<Movie> findByGenre(MovieGenre genre);
 
-    List<Movie> findByGeneAndTitleContaining(MovieGenre genre,String title);
+    List<Movie> findByGenreAndTitleContaining(MovieGenre genre,String title);
 
 }

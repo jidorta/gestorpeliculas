@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public interface UserCrudRepository extends JpaRepository<User,Long> {
 
-    List<User> finByNameContaining(String name);
+    List<User> findByNameContaining(String name);
 
     Optional<User> findByUsername(String username);
 

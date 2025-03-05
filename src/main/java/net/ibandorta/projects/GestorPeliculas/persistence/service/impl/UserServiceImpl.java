@@ -6,9 +6,10 @@ import net.ibandorta.projects.GestorPeliculas.persistence.repository.UserCrudRep
 import net.ibandorta.projects.GestorPeliculas.persistence.service.UserService;
 import org.hibernate.cfg.QuerySecondPass;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+@Service
 public class UserServiceImpl  implements UserService {
 
     @Autowired
@@ -21,16 +22,15 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public List<User> findAllByName(String name) {
-        return userCrudRepository.finByNameContaining(name);
+        return userCrudRepository.findByNameContaining(name);
     }
-
-
 
     @Override
     public User findOneByUsername(String username) {
         return userCrudRepository.findByUsername(username)
-                .orElseThrow(()->new ObjectNotFoundException("[user:"+ username + "]"));
+                .orElseThrow( () -> new ObjectNotFoundException("[user: " + username  + "]"));
     }
+
 
     @Override
     public User saveOne(User user) {
@@ -42,6 +42,9 @@ public class UserServiceImpl  implements UserService {
         User oldUser = this.findOneByUsername(username);
         oldUser.setName(user.getName());
         oldUser.setPassword(user.getPassword());
+
+
+
         return userCrudRepository.save(oldUser);
 
 

@@ -1,13 +1,19 @@
 package net.ibandorta.projects.GestorPeliculas.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import net.ibandorta.projects.GestorPeliculas.exception.ObjectNotFoundException;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.Movie;
 import net.ibandorta.projects.GestorPeliculas.persistence.service.MovieService;
 import net.ibandorta.projects.GestorPeliculas.util.MovieGenre;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 //@Controller
@@ -19,7 +25,7 @@ public class MovieController {
     private MovieService movieService;
 
     @RequestMapping(method= RequestMethod.GET)
-    public List<Movie> findAll(@RequestParam(required = false) String title,@RequestParam(required = false) MovieGenre genre){
+    public ResponseEntity<List<Movie>> findAll(@RequestParam(required = false) String title, @RequestParam(required = false) MovieGenre genre){
 
          List<Movie> peliculas = null;
 
@@ -33,32 +39,37 @@ public class MovieController {
              peliculas = movieService.findAll();
          }
 
-        return peliculas;
+         return ResponseEntity.ok(peliculas);
     }
- //  @RequestMapping(method= RequestMethod.GET, params = {"title","genre"})
- //  public List<Movie> findAllByGenreAndTitle(@RequestParam(required = false) String title,
-  //                            @RequestParam(required = false) MovieGenre genre){
-  //     return movieService.findAllByGenreAndTitle(genre,title);
-//   }
 
-   // @RequestMapping(method= RequestMethod.GET, params = ("title"))
-   // public List<Movie> findAllByTitle(@RequestParam String title){
-   //     return movieService.findAllByTitle(title);
-   // }
+    @RequestMapping(method = RequestMethod.GET,value = "/{id}")
+    public ResponseEntity<Movie> findOneById(@PathVariable Long id){
 
-  //  @RequestMapping(method= RequestMethod.GET, params = "genre")
-  //  public List<Movie> findAllByGenre(@RequestParam MovieGenre genre){
-   //     return movieService.findAllByGenre(genre);
- //   }
+        try {
+            return ResponseEntity.ok(movieService.findOneById(id));
+        }catch (ObjectNotFoundException exception){
+            return ResponseEntity.notFound().build();
 
-  //  @RequestMapping(method= RequestMethod.GET, params = {"!title", "!genre"})
-  //  public List<Movie> findAll(@RequestParam MovieGenre genre){
-  //      return movieService.findAll();
-  //  }
+        }
 
- //   @RequestMapping(method=RequestMethod.GET, value ="/{id}")
-  //  public Movie findOneById(@PathVariable Long id){
-    //    return movieService.findOneById(id);
-  //  }
 
+    }
+
+    @RequestMapping(method =  RequestMethod.POST)
+    public ResponseEntity<Movie>createOne(@RequestBody Movie newMovie,
+
+                                          HttpServletRequest request) {
+
+
+
+        Movie movieCreated = movieService.createOne(newMovie);
+
+        String baseUrl = request.getRequestURL().toString();
+
+        URI newLocation = URI.create(baseUrl + "/" + movieCreated.getId());
+
+        return ResponseEntity
+                .created(newLocation)
+                .body(movieCreated);
+    }
 }

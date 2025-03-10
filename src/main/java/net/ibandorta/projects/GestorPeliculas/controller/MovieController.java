@@ -24,7 +24,8 @@ public class MovieController {
     @Autowired
     private MovieService movieService;
 
-    @RequestMapping(method= RequestMethod.GET)
+
+    @GetMapping
     public ResponseEntity<List<Movie>> findAll(@RequestParam(required = false) String title, @RequestParam(required = false) MovieGenre genre){
 
          List<Movie> peliculas = null;
@@ -42,7 +43,7 @@ public class MovieController {
          return ResponseEntity.ok(peliculas);
     }
 
-    @RequestMapping(method = RequestMethod.GET,value = "/{id}")
+  @GetMapping(value ="/{id}")
     public ResponseEntity<Movie> findOneById(@PathVariable Long id){
 
         try {
@@ -55,7 +56,8 @@ public class MovieController {
 
     }
 
-    @RequestMapping(method =  RequestMethod.POST)
+
+    @PostMapping
     public ResponseEntity<Movie>createOne(@RequestBody Movie newMovie,
 
                                           HttpServletRequest request) {
@@ -71,5 +73,28 @@ public class MovieController {
         return ResponseEntity
                 .created(newLocation)
                 .body(movieCreated);
+    }
+
+    @PutMapping (value="/{id}")
+    public ResponseEntity<Movie> updateOneById(@PathVariable Long id, @RequestBody Movie movie){
+
+        try{
+
+            Movie updateMovie = movieService.updateOneById(id,movie);
+            return ResponseEntity.ok(updateMovie);
+
+        }catch (ObjectNotFoundException exception){
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @DeleteMapping(value="/{id}")
+    public ResponseEntity<Void>deleteOneById(@PathVariable Long id){
+        try {
+            movieService.deleteOneById(id);
+            return ResponseEntity.noContent().build();
+        }catch (ObjectNotFoundException exception){
+            return ResponseEntity.notFound().build();
+        }
     }
 }

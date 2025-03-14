@@ -1,6 +1,9 @@
 package net.ibandorta.projects.GestorPeliculas.persistence.service.impl;
 
+import net.ibandorta.projects.GestorPeliculas.dto.request.SaveMovie;
+import net.ibandorta.projects.GestorPeliculas.dto.response.GetMovie;
 import net.ibandorta.projects.GestorPeliculas.exception.ObjectNotFoundException;
+import net.ibandorta.projects.GestorPeliculas.mapper.MovieMapper;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.Movie;
 import net.ibandorta.projects.GestorPeliculas.persistence.repository.MovieCrudRepository;
 import net.ibandorta.projects.GestorPeliculas.persistence.service.MovieService;
@@ -18,54 +21,71 @@ public class MovieServiceImpl implements MovieService {
     private MovieCrudRepository movieCrudRepository;
 
     @Override
-    public List<Movie> findAll() {
-        return movieCrudRepository.findAll();
+    public List<GetMovie> findAll() {
+        List<Movie> entities = movieCrudRepository.findAll();
+       return MovieMapper.toGetDtoList(entities);
     }
 
     @Override
-    public List<Movie> findAllByTitle(String title) {
-        return movieCrudRepository.findByTitleContaining(title);
+    public List<GetMovie> findAllByTitle(String title) {
+        List<Movie> entities = movieCrudRepository.findByTitleContaining(title);
+        return MovieMapper.toGetDtoList(entities);
     }
 
     @Override
-    public List<Movie> findAllByGenre(MovieGenre genre) {
-        return movieCrudRepository.findByGenre(genre);
+    public List<GetMovie> findAllByGenre(MovieGenre genre) {
+        List<Movie> entities= movieCrudRepository.findByGenre(genre);
+        return MovieMapper.toGetDtoList(entities);
     }
 
 
 
     @Override
-    public List<Movie> findAllByGenreAndTitle(MovieGenre genre, String title) {
-        return movieCrudRepository.findByGenreAndTitleContaining(genre, title);
+    public List<GetMovie> findAllByGenreAndTitle(MovieGenre genre, String title) {
+        List<Movie> entities = movieCrudRepository.findByGenreAndTitleContaining(genre, title);
+        return MovieMapper.toGetDtoList(entities);
     }
 
     @Override
-    public Movie findOneById(Long id) {
-        return  movieCrudRepository.findById(id)
-                .orElseThrow(() -> new ObjectNotFoundException("[movie:" + Long.toString(id) +"]"));
+    public GetMovie findOneById(Long id) {
+        return MovieMapper.toGetDto(this.findOneEntityById(id));
+    }
+
+
+
+
+    private Movie findOneEntityById(Long id) {
+
+            return movieCrudRepository.findById(id)
+                    .orElseThrow(()-> new ObjectNotFoundException("[movie: "+ Long.toString(id)+"]"));
 
     }
 
     @Override
-    public Movie createOne(Movie movie) {
-        return movieCrudRepository.save(movie);
+    public GetMovie createOne(SaveMovie saveDto) {
+
+        Movie newMovie = MovieMapper.toEntity(saveDto);
+
+        return MovieMapper.toGetDto(
+                movieCrudRepository.save(newMovie)
+        );
     }
 
     @Override
-    public Movie updateOneById(Long id, Movie newMovie) {
-        Movie oldMovie = this.findOneById(id);
-        oldMovie.setGenre(newMovie.getGenre());
-        oldMovie.setReleaseYear(newMovie.getReleaseYear());
-        oldMovie.setTitle(newMovie.getTitle());
-        oldMovie.setDirector(newMovie.getDirector());
+    public GetMovie updateOneById(Long id, SaveMovie saveDto) {
+        Movie oldMovie = this.findOneEntityById(id);
 
-        return movieCrudRepository.save(oldMovie);
+        MovieMapper.updateEntity(oldMovie, saveDto);
 
+
+        return MovieMapper.toGetDto(
+                movieCrudRepository.save(oldMovie)
+        );
     }
 
     @Override
     public void deleteOneById(Long id) {
-        Movie movie = this.findOneById(id);
+        Movie movie = this.findOneEntityById(id);
         movieCrudRepository.delete(movie);
 
     }

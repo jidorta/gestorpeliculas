@@ -38,4 +38,10 @@ public class UserMapper {
     }
 
 
+    public static void updateEntity(User oldUser, SaveUser saveDto) {
+        if(oldUser == null || saveDto == null )return;
+
+        oldUser.setName(saveDto.name());
+        oldUser.setPassword(saveDto.password());
+    }
 }

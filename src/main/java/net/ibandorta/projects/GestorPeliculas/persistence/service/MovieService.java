@@ -1,5 +1,7 @@
 package net.ibandorta.projects.GestorPeliculas.persistence.service;
 
+import net.ibandorta.projects.GestorPeliculas.dto.request.SaveMovie;
+import net.ibandorta.projects.GestorPeliculas.dto.response.GetMovie;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.Movie;
 import net.ibandorta.projects.GestorPeliculas.util.MovieGenre;
 
@@ -7,19 +9,19 @@ import java.util.List;
 
 public interface MovieService {
 
-    List<Movie> findAll();
+    List<GetMovie> findAll();
 
-    List<Movie> findAllByTitle(String title);
+    List<GetMovie> findAllByTitle(String title);
 
-    List<Movie> findAllByGenre(MovieGenre genre);
+    List<GetMovie> findAllByGenre(MovieGenre genre);
 
-    List<Movie> findAllByGenreAndTitle(MovieGenre genre, String title);
+    List<GetMovie> findAllByGenreAndTitle(MovieGenre genre, String title);
 
-    Movie findOneById(Long id);
+    GetMovie findOneById(Long id);
 
-    Movie createOne(Movie movie);
+    GetMovie createOne(SaveMovie saveDto);
 
-    Movie updateOneById(Long id, Movie movie);
+    GetMovie updateOneById(Long id, SaveMovie saveDto);
 
     void deleteOneById(Long id);
 }

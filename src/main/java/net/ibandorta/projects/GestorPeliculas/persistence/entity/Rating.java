@@ -11,11 +11,10 @@ public  class Rating {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private Long id;
 
     @Column(name="movie_id",nullable = false)
-    @JsonProperty(value ="movie-id")
+
     private Long movieId;
 
     @Column(name="user_id", nullable = false)
@@ -29,13 +28,12 @@ public  class Rating {
     @ManyToOne
     @JoinColumn(name ="movie_id", insertable = false, updatable = false)
   //  @JsonIgnore
-    @JsonManagedReference("movie-to-ratings")
+
     private Movie movie;
 
     @ManyToOne
     @JoinColumn(name="user_id", insertable = false, updatable = false)
  //   @JsonIgnore
-    @JsonManagedReference("user-to-rating")
     private User user;
 
 

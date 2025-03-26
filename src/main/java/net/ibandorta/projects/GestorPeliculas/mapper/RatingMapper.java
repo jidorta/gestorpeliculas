@@ -4,6 +4,8 @@ import net.ibandorta.projects.GestorPeliculas.dto.response.GetMovie;
 import net.ibandorta.projects.GestorPeliculas.dto.response.GetUser;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.Rating;
 
+import java.util.List;
+
 public class RatingMapper {
 
     public static GetMovie.GetRating toGetMovieRatingDto(Rating entity){
@@ -35,5 +37,23 @@ public class RatingMapper {
 
 
         );
+    }
+
+    public static List<GetMovie.GetRating> toGetMovieRatingDtoList(List<Rating> entities){
+        if(entities == null)return null;
+
+        return entities.stream()
+                .map(RatingMapper::toGetMovieRatingDto)
+                .toList();
+    }
+
+
+
+    public static List<GetUser.GetRating> toGetUserRatingDtoList(List<Rating> entities){
+        if(entities == null)return null;
+
+        return entities.stream()
+                .map(RatingMapper::toGetUserRatingDto)
+                .toList();
     }
 }

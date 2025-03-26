@@ -7,7 +7,6 @@ import jakarta.persistence.*;
 import net.ibandorta.projects.GestorPeliculas.util.MovieGenre;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -16,7 +15,7 @@ import java.util.List;
 public class Movie {
 
     @Id @GeneratedValue (strategy =GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+
     private Long id;
 
     @Column(nullable = false)
@@ -30,17 +29,15 @@ public class Movie {
     private MovieGenre genre;
 
     @Column(name = "release_year")
-    @JsonProperty(value ="release-year")
+
     private int releaseYear;
 
     @CreationTimestamp
-    @JsonProperty(value="created-at")
-    @JsonFormat(pattern = "yyyy/MM/dd - HH:mm:ss")
     @Column (updatable = false,columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private LocalDateTime createdAt;
 
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "movie" )
-    @JsonManagedReference("movie-to-ratings")
+
     private List<Rating> ratings;
 
     public Long getId() {

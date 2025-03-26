@@ -1,18 +1,16 @@
 package net.ibandorta.projects.GestorPeliculas.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.ibandorta.projects.GestorPeliculas.dto.request.SaveMovie;
+import net.ibandorta.projects.GestorPeliculas.dto.response.GetMovie;
 import net.ibandorta.projects.GestorPeliculas.exception.ObjectNotFoundException;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.Movie;
 import net.ibandorta.projects.GestorPeliculas.persistence.service.MovieService;
 import net.ibandorta.projects.GestorPeliculas.util.MovieGenre;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-
 import java.net.URI;
 import java.util.List;
 
@@ -26,25 +24,25 @@ public class MovieController {
 
 
     @GetMapping
-    public ResponseEntity<List<Movie>> findAll(@RequestParam(required = false) String title, @RequestParam(required = false) MovieGenre genre){
+    public ResponseEntity<List<GetMovie>> findAll(@RequestParam(required = false) String title, @RequestParam(required = false) MovieGenre genre){
 
-         List<Movie> peliculas = null;
+         List<GetMovie> movies = null;
 
          if(StringUtils.hasText(title) && genre != null){
-             peliculas = movieService.findAllByGenreAndTitle(genre,title);
+             movies = movieService.findAllByGenreAndTitle(genre,title);
          } else if (StringUtils.hasText(title)){
-             peliculas = movieService.findAllByTitle(title);
+             movies = movieService.findAllByTitle(title);
          }else if (genre != null){
-             peliculas = movieService.findAllByGenre(genre);
+             movies = movieService.findAllByGenre(genre);
          }else{
-             peliculas = movieService.findAll();
+             movies = movieService.findAll();
          }
 
-         return ResponseEntity.ok(peliculas);
+         return ResponseEntity.ok(movies);
     }
 
   @GetMapping(value ="/{id}")
-    public ResponseEntity<Movie> findOneById(@PathVariable Long id){
+    public ResponseEntity<GetMovie> findOneById(@PathVariable Long id){
 
         try {
             return ResponseEntity.ok(movieService.findOneById(id));
@@ -58,17 +56,17 @@ public class MovieController {
 
 
     @PostMapping
-    public ResponseEntity<Movie>createOne(@RequestBody Movie newMovie,
+    public ResponseEntity<GetMovie>createOne(@RequestBody SaveMovie saveDto,
 
                                           HttpServletRequest request) {
 
 
 
-        Movie movieCreated = movieService.createOne(newMovie);
+        GetMovie movieCreated = movieService.createOne(saveDto);
 
         String baseUrl = request.getRequestURL().toString();
 
-        URI newLocation = URI.create(baseUrl + "/" + movieCreated.getId());
+        URI newLocation = URI.create(baseUrl + "/" + movieCreated.id());
 
         return ResponseEntity
                 .created(newLocation)
@@ -76,11 +74,11 @@ public class MovieController {
     }
 
     @PutMapping (value="/{id}")
-    public ResponseEntity<Movie> updateOneById(@PathVariable Long id, @RequestBody Movie movie){
+    public ResponseEntity<GetMovie> updateOneById(@PathVariable Long id, @RequestBody SaveMovie saveDto){
 
         try{
 
-            Movie updateMovie = movieService.updateOneById(id,movie);
+            GetMovie updateMovie = movieService.updateOneById(id,saveDto);
             return ResponseEntity.ok(updateMovie);
 
         }catch (ObjectNotFoundException exception){

@@ -19,6 +19,7 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public List<GetUser> findAll() {
+
         List<User>entities = userCrudRepository.findAll();
         return UserMapper.toGetDtoList(entities);
     }
@@ -31,6 +32,8 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public GetUser findOneByUsername(String username) {
+          
+
 
         return UserMapper.toGetDto(this.findOneEntityByUsername(username));
     }

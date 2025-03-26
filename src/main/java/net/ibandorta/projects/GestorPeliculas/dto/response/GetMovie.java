@@ -7,7 +7,7 @@ import java.io.Serializable;
 import java.util.List;
 
 public record GetMovie(
-        long id,
+        Long id,
         String title,
         String director,
         MovieGenre genre,

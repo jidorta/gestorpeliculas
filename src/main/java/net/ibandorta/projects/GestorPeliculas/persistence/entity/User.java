@@ -26,12 +26,10 @@ public class User {
 
 
     @OneToMany (fetch = FetchType.EAGER, mappedBy = "user")
-    @JsonManagedReference("user-to-rating")
+
     private List<Rating> ratings;
 
     @CreationTimestamp
-    @JsonProperty(value="created-at")
-    @JsonFormat(pattern = "yyyy/MM/dd - HH:mm:ss")
     @Column (updatable = false, columnDefinition = "TIMESTAMP DEFAULT NOW()")
     private LocalDateTime createdAt;
 

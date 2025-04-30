@@ -2,6 +2,7 @@ package net.ibandorta.projects.GestorPeliculas.controller;
 
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import net.ibandorta.projects.GestorPeliculas.dto.request.SaveUser;
 import net.ibandorta.projects.GestorPeliculas.dto.response.GetUser;
 import net.ibandorta.projects.GestorPeliculas.exception.ObjectNotFoundException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import jakarta.validation.constraints.*;
 
 import java.net.URI;
 import java.util.List;
@@ -32,7 +34,7 @@ public class UserController {
         if(StringUtils.hasText(name)){
             users = userService.findAllByName(name);
         }else{
-        }            users = userService.findAll();
+         }            users = userService.findAll();
 
 
 
@@ -51,7 +53,7 @@ public class UserController {
 
 
     @PostMapping
-    public ResponseEntity<GetUser> createOne(@RequestBody SaveUser saveDto,
+    public ResponseEntity<GetUser> createOne(@RequestBody @Valid SaveUser saveDto,
                                           HttpServletRequest request){
 
 
@@ -69,7 +71,7 @@ public class UserController {
 
     @PutMapping(value = "/{username}")
     public ResponseEntity<GetUser> updateOneByUsername(@PathVariable String username,
-                                                    @RequestBody SaveUser saveDto){
+                                                    @RequestBody  @Valid SaveUser saveDto){
 
        try{
            GetUser updateUser = userService.updateOneByUsername(username, saveDto);

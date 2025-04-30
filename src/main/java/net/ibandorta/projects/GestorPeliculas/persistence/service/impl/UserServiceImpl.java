@@ -7,6 +7,7 @@ import net.ibandorta.projects.GestorPeliculas.mapper.UserMapper;
 import net.ibandorta.projects.GestorPeliculas.persistence.entity.User;
 import net.ibandorta.projects.GestorPeliculas.persistence.repository.UserCrudRepository;
 import net.ibandorta.projects.GestorPeliculas.persistence.service.UserService;
+import net.ibandorta.projects.GestorPeliculas.persistence.service.validator.PasswordValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,6 +51,7 @@ public class UserServiceImpl  implements UserService {
 
     @Override
     public GetUser saveOne(SaveUser saveDto) {
+        PasswordValidator.validatePassword(saveDto.password(),saveDto.passwordRepeated());
         User newUser =  UserMapper.toEntity(saveDto);
         return UserMapper.toGetDto(userCrudRepository.save(newUser));
     }
@@ -57,6 +59,8 @@ public class UserServiceImpl  implements UserService {
 
 
     public GetUser updateOneByUsername(String username, SaveUser saveDto) {
+        PasswordValidator.validatePassword(saveDto.password(),saveDto.passwordRepeated());
+
         User oldUser = this.findOneEntityByUsername(username);
 
         if(saveDto == null)return null;
